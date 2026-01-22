@@ -38,9 +38,6 @@ jobs:
           echo "$PGP_SECRET" > private-key.asc
           gpg --batch --import private-key.asc
           rm private-key.asc
-          # Optional: set trust (avoids "untrusted key" warnings)
-          KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep '^sec' | awk '{print $2}' | cut -d'/' -f2 | head -1)
-          echo -e "5\ny\n" | gpg --command-fd 0 --expert --edit-key $KEY_ID trust
       - name: Stage & sign artifacts
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
