@@ -1,0 +1,56 @@
+name: CD
+on:
+  push:
+    tags:
+      - v*.*.*
+  workflow_run:
+    workflows:
+      - CI
+    types:
+      - completed
+    branches:
+      - main
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Setup JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 11
+          cache: sbt
+      - name: Setup SBT
+        uses: sbt/setup-sbt@v1
+      - name: Import GPG key
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+        run: |
+          echo "$PGP_SECRET" > private-key.asc
+          gpg --batch --import private-key.asc
+          rm private-key.asc
+          # Optional: set trust (avoids "untrusted key" warnings)
+          KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep '^sec' | awk '{print $2}' | cut -d'/' -f2 | head -1)
+          echo -e "5\ny\n" | gpg --command-fd 0 --expert --edit-key $KEY_ID trust
+      - name: Stage & sign artifacts
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          PGP_KEY_ID: ${{ secrets.PGP_KEY_ID }}
+          PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+        run: sbt +clean publishSigned
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: maven-central-bundle
+          path: target/sona-staging/**
+          retention-days: 7
