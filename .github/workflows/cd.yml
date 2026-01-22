@@ -45,9 +45,17 @@ jobs:
           PGP_KEY_ID: ${{ secrets.PGP_KEY_ID }}
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
         run: sbt +clean publishSigned
-      - name: Upload artifacts
+      - name: Zip artifacts
+        run: |
+          if [ ! -d "target/sona-staging" ] || [ -z "$(ls -A target/sona-staging)" ]; then
+            echo "Error: target/sona-staging is missing or empty"
+            ls -la target/ || true
+            exit 1
+          fi
+          zip -r bundle.zip target/sona-staging
+      - name: Upload zip
         uses: actions/upload-artifact@v4
         with:
           name: maven-central-bundle
-          path: target/sona-staging/**
+          path: bundle.zip
           retention-days: 7
