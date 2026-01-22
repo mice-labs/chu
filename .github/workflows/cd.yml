@@ -47,12 +47,12 @@ jobs:
         run: sbt +clean publishSigned
       - name: Zip artifacts
         run: |
-          if [ ! -d "target/sona-staging" ] || [ -z "$(ls -A target/sona-staging)" ]; then
-            echo "Error: target/sona-staging is missing or empty"
+          if [ ! -d "target/sonatype-staging" ] || [ -z "$(ls -A target/sonatype-staging)" ]; then
+            echo "Error: target/sonatype-staging is missing or empty"
             ls -la target/ || true
             exit 1
           fi
-          zip -r bundle.zip target/sona-staging
+          zip -r bundle.zip target/sonatype-staging
       - name: Upload zip
         uses: actions/upload-artifact@v4
         with:
