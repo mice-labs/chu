@@ -1,12 +1,12 @@
 import team.mice.Dependencies
 
 lazy val commonSettings = Seq(
-  scalaVersion   := "3.3.7",
-  organization               := "team.mice",
+  scalaVersion     := "3.3.7",
+  organization     := "team.mice",
   organizationName := "Mice Labs",
-  versionScheme := Some("early-semver"),
+  versionScheme    := Some("early-semver"),
   dependencyUpdatesFilter -= moduleFilter(name = "scala-library"),
-  scalacOptions              := {
+  scalacOptions := {
     scalaBinaryVersion.value match {
       case v if v.startsWith("2.13") => Seq("-Ymacro-annotations", "-Xlint", "-Ywarn-unused", "-deprecation", "")
       case _                         => Seq("-explain", "-Ykind-projector")
@@ -33,7 +33,7 @@ lazy val publishSettings = Seq(
     "Central Repository",
     "central.sonatype.com",
     sys.env.getOrElse("SONATYPE_USERNAME", ""),
-    sys.env.getOrElse("SONATYPE_PASSWORD", ""),
+    sys.env.getOrElse("SONATYPE_PASSWORD", "")
   ),
   credentials += Credentials(
     "GnuPG Key ID",
