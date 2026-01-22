@@ -8,7 +8,7 @@ object Plugins {
     val core: ModuleID = "com.timushev.sbt" % "sbt-updates" % version
   }
   object SCoverage {
-    private val version = "1.6.1"
+    private val version = "2.4.4"
     val core: ModuleID = "org.scoverage" % "sbt-scoverage" % version
   }
   object ScalaFmt {

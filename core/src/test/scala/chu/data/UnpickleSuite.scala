@@ -23,4 +23,15 @@ object UnpickleSuite extends SimpleIOSuite with Discipline {
     Arbitrary(Arbitrary.arbitrary[Stream[F, Byte] => F[A]].map(Unpickle.instance))
 
   checkAll("Unpickle[IO, MiniInt, *]", ApplicativeErrorTests[Unpickle[IO, *], Throwable].applicativeError[Int, Int, Int])
+  pureTest("map") {
+    val fa = Unpickle
+      .instance[Id, Int](s => s.compile.fold(0)(_ + _))
+      .map(_.toString)
+    expect.same(fa.run(Stream(0.toByte, 1.toByte, 2.toByte)), "3")
+  }
+
+  object ImplicitResolution:
+    given Unpickle[Id, String] =
+      Unpickle.instance(s => new String(s.compile.toList.toArray))
+    Unpickle[Id, String]
 }

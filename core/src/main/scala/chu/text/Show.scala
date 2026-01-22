@@ -18,9 +18,6 @@ trait Show[-A] extends Encoder[A, String]:
   def contramap[B](f: B => A): Show[B] =
     local(f)
 
-  def mapString(f: String => String): Show[A] =
-    Show.instance(run.andThen(f))
-
 object Show:
   def apply[A: Show]: Show[A] =
     summon[Show[A]]

@@ -1,6 +1,7 @@
 package chu.text
 
 import cats.Eq
+import cats.implicits.*
 import cats.laws.discipline.*
 import cats.laws.discipline.eq.*
 import cats.laws.discipline.arbitrary.*
@@ -18,4 +19,16 @@ object ReadSuite extends SimpleIOSuite with Discipline {
     Arbitrary(Arbitrary.arbitrary[String => Either[E, A]].map(Read.instance))
 
   checkAll("Read[MinInt, *]", ApplicativeErrorTests[Read[MiniInt, *], MiniInt].applicativeError[Int, Int, Int])
+  pureTest("map") {
+    val fa = Read
+      .instance[Throwable, Int](s => Either.catchNonFatal(s.toInt))
+      .map(_ + 1)
+    expect.same(fa.run("10"), 11.asRight) and
+      expect(fa.run("abc").isLeft)
+  }
+
+  object ImplicitResolution:
+    given Read[Throwable, Int] = Read
+      .instance[Throwable, Int](s => Either.catchNonFatal(s.toInt))
+    Read[Throwable, Int]
 }

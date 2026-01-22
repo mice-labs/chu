@@ -16,4 +16,15 @@ object ShowSuite extends SimpleIOSuite with Discipline {
     Arbitrary(Arbitrary.arbitrary[A => String].map(Show.instance))
 
   checkAll("Show", ContravariantTests[Show].contravariant[MiniInt, Int, Boolean])
+
+  pureTest("contramap") {
+    val fa = Show
+      .instance[Int](_.toString)
+      .contramap[Long](_.toInt)
+    expect.same(fa.run(1L), "1")
+  }
+
+  object ImplicitResolution:
+    given Show[Int] = Show.instance(_.toString)
+    Show[Int]
 }

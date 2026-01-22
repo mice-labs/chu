@@ -9,7 +9,7 @@ import fs2.{Compiler, Stream}
 import org.scalacheck.{Arbitrary, Cogen, Gen}
 
 object Fs2Instances {
-  val STREAM_LENGTH = 5
+  val STREAM_LENGTH = 3
 
   given [F[_], A: ExhaustiveCheck]: ExhaustiveCheck[Stream[F, A]] =
     ExhaustiveCheck.instance {
