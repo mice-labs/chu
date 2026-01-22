@@ -15,17 +15,10 @@ object Plugins {
     private val version = "2.0.1"
     val core: ModuleID = "org.scalameta" % "sbt-scalafmt" % version
   }
-  object SBTGit {
-    private val version = "2.1.0"
-    val core            = "com.github.sbt" % "sbt-git" % version
-  }
-  object Sonatype {
-    private val version = "3.8"
-    val core: ModuleID = "org.xerial.sbt" % "sbt-sonatype" % version
-  }
-  object PGP {
-    private val version = "2.0.0"
-    val core: ModuleID = "com.jsuereth" % "sbt-pgp" % version
+  object SBT {
+    val git            = "com.github.sbt" % "sbt-git" % "2.1.0"
+    val pgp = "com.github.sbt" % "sbt-pgp" % "2.3.0"
+    val ciRelease = "com.github.sbt" % "sbt-ci-release" % "1.11.2"
   }
   object Jmh {
     private val version = "0.4.8"

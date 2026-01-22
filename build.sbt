@@ -28,7 +28,6 @@ lazy val commonSettings = Seq(
 )
 
 lazy val publishSettings = Seq(
-  publishTo := sonatypePublishToBundle.value,
   credentials += Credentials(
     "Central Repository",
     "central.sonatype.com",
