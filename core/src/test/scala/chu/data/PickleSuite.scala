@@ -18,4 +18,14 @@ object PickleSuite extends SimpleIOSuite with Discipline {
     Arbitrary(Arbitrary.arbitrary[A => Stream[F, Byte]].map(Pickle.instance))
 
   checkAll("Pickle[Id, *]", ContravariantTests[Pickle[Id, *]].contravariant[MiniInt, Int, Boolean])
+  pureTest("contramap") {
+    val fa = Pickle
+      .instance[Id, String](s => Stream.emits(s.getBytes))
+      .contramap[Long](l => l.toString)
+    expect.same(fa.run(123L), Stream.emits("123".getBytes))
+  }
+  object ImplicitResolution:
+    given Pickle[Id, String] =
+      Pickle.instance[Id, String](s => Stream.emits(s.getBytes))
+    Pickle[Id, String]
 }

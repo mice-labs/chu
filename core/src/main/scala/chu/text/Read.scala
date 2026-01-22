@@ -15,9 +15,6 @@ trait Read[E, A] extends Decoder[E, String, A]:
   override def map[B](f: A => B): Read[E, B] =
     Read.instance(run(_).map(f))
 
-  override def emap[B](f: A => Either[E, B]): Read[E, B] =
-    Read.instance(run(_).flatMap(f))
-
   def handleErrorWith(f: E => Read[E, A]): Read[E, A] =
     Read.instance(s => run(s).leftFlatMap(f(_).run(s)))
 

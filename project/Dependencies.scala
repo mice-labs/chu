@@ -14,7 +14,7 @@ object Dependencies {
   }
 
   object FS2 {
-    private val version = "3.12.0"
+    private val version = "3.12.2"
     val core            = "co.fs2" %% "fs2-core" % version
   }
 

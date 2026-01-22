@@ -28,9 +28,6 @@ trait Decoder[E, -A, B] extends Kleisli[Either[E, *], A, B]:
   def map[C](f: B => C): Decoder[E, A, C] =
     Decoder.instance(run(_).map(f))
 
-  def emap[C](f: B => Either[E, C]): Decoder[E, A, C] =
-    Decoder.instance(run(_).flatMap(f))
-
   def dimap[C, D](f: C => A)(g: B => D): Decoder[E, C, D] =
     Decoder.instance(c => run(f(c)).map(g))
 

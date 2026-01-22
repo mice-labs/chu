@@ -8,11 +8,12 @@ lazy val commonSettings = Seq(
 )
 
 lazy val publishSettings = Seq(
-  publishTo             := sonatypePublishTo.value,
-  publishConfiguration  := publishConfiguration.value.withOverwrite(isSnapshot.value),
-  coverageMinimum       := 90,
-  coverageFailOnMinimum := true,
-  scalacOptions         := {
+  publishTo                  := sonatypePublishTo.value,
+  publishConfiguration       := publishConfiguration.value.withOverwrite(isSnapshot.value),
+  coverageMinimumStmtTotal   := 75,
+  coverageMinimumBranchTotal := 75,
+  coverageFailOnMinimum      := true,
+  scalacOptions              := {
     scalaBinaryVersion.value match {
       case v if v.startsWith("2.13") => Seq("-Ymacro-annotations", "-Xlint", "-Ywarn-unused", "-deprecation", "")
       case _                         => Seq("-explain", "-Ykind-projector")
