@@ -31,16 +31,9 @@ jobs:
           cache: sbt
       - name: Setup SBT
         uses: sbt/setup-sbt@v1
-      - name: Import GPG key
-        env:
-          PGP_SECRET: ${{ secrets.PGP_SECRET }}
-        run: |
-          echo "$PGP_SECRET" > private-key.asc
-          gpg --batch --import private-key.asc
-          rm private-key.asc
       - name: Publish
-        run: |
-          export SONATYPE_USERNAME="${{ secrets.SONATYPE_USERNAME }}"
-          export SONATYPE_PASSWORD="${{ secrets.SONATYPE_PASSWORD }}"
-          export PGP_KEY_ID="${{ secrets.PGP_KEY_ID }}"
-          sbt +clean ci-release
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+        run: sbt +clean ci-release
