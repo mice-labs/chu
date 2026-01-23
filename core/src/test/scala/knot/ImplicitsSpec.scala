@@ -1,0 +1,3 @@
+package knot
+
+object ImplicitsSpec {}
