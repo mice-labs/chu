@@ -34,12 +34,6 @@ lazy val publishSettings = Seq(
     sys.env.getOrElse("SONATYPE_USERNAME", ""),
     sys.env.getOrElse("SONATYPE_PASSWORD", "")
   ),
-  credentials += Credentials(
-    "GnuPG Key ID",
-    "gpg",
-    sys.env.getOrElse("PGP_KEY_ID", ""),
-    sys.env.getOrElse("PGP_PASSPHRASE", "")
-  ),
   publishMavenStyle      := true,
   Test / publishArtifact := false,
   pomIncludeRepository   := { _ => false }
