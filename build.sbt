@@ -52,11 +52,11 @@ lazy val core = project
   .in(file("core"))
   .enablePlugins(GitVersioning)
   .settings(
-    name := "chu-core",
+    name := "knot-core",
     commonSettings,
     publishSettings,
-    coverageMinimumStmtTotal   := 75,
-    coverageMinimumBranchTotal := 75,
+    coverageMinimumStmtTotal   := 80,
+    coverageMinimumBranchTotal := 80,
     coverageFailOnMinimum      := true,
     libraryDependencies ++= Seq(
       Dependencies.Cats.core,

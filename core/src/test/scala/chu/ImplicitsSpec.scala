@@ -1,3 +1,0 @@
-package chu
-
-object ImplicitsSpec {}
