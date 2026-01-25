@@ -21,7 +21,7 @@ object ShowSuite extends SimpleIOSuite with Discipline {
     val fa = Show
       .instance[Int](_.toString)
       .contramap[Long](_.toInt)
-    expect.same(fa.run(1L), "1")
+    expect.eql(fa.run(1L), "1")
   }
 
   object ImplicitResolution:

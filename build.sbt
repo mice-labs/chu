@@ -59,12 +59,10 @@ lazy val core = project
     coverageMinimumBranchTotal := 80,
     coverageFailOnMinimum      := true,
     libraryDependencies ++= Seq(
-      Dependencies.Cats.core,
-      Dependencies.FS2.core
+      Dependencies.Cats.core
     ) ++ Seq(
       Dependencies.Weaver.cats,
       Dependencies.Weaver.discipline,
-      Dependencies.Cats.laws,
-      Dependencies.Cats.effectLaws
+      Dependencies.Cats.laws
     ).map(_ % "test")
   )

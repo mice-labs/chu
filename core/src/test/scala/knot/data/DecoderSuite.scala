@@ -23,76 +23,76 @@ object DecoderSuite extends SimpleIOSuite with Discipline {
 
   pureTest("contramap") {
     val fa = Decoder
-      .instance[Throwable, String, Int](s => Either.catchNonFatal(s.toInt))
+      .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
       .contramap[Long](l => l.toString)
-    expect.same(fa.run(123L), 123.asRight) and
+    expect.eql(fa.run(123L), 123.asRight) and
       expect(fa.run(Long.MaxValue).isLeft)
   }
   pureTest("map") {
     val fa = Decoder
-      .instance[Throwable, String, Int](s => Either.catchNonFatal(s.toInt))
+      .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
       .map(_ + 1)
-    expect.same(fa.run("10"), 11.asRight) and
+    expect.eql(fa.run("10"), 11.asRight) and
       expect(fa.run("abc").isLeft)
   }
   pureTest("dimap") {
     val fa = Decoder
-      .instance[Throwable, String, Int](s => Either.catchNonFatal(s.toInt))
+      .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
       .dimap[Long, Int](l => l.toString)(_ + 1)
-    expect.same(fa.run(124L), 125.asRight) and
+    expect.eql(fa.run(124L), 125.asRight) and
       expect(fa.run(Long.MaxValue).isLeft)
   }
   pureTest("lmap") {
     val fa = Decoder
-      .instance[Throwable, String, Int](s => Either.catchNonFatal(s.toInt))
+      .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
       .lmap[Long](l => l.toString)
-    expect.same(fa.run(123L), 123.asRight) and
+    expect.eql(fa.run(123L), 123.asRight) and
       expect(fa.run(Long.MaxValue).isLeft)
   }
   pureTest("rmap") {
     val fa = Decoder
-      .instance[Throwable, String, Int](s => Either.catchNonFatal(s.toInt))
+      .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
       .rmap(_ + 1)
-    expect.same(fa.run("10"), 11.asRight) and
+    expect.eql(fa.run("10"), 11.asRight) and
       expect(fa.run("abc").isLeft)
   }
   pureTest("andThen") {
     val fa = Decoder
-      .instance[Throwable, String, Int](s => Either.catchNonFatal(s.toInt))
+      .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
     val fb = Decoder
-      .instance[Throwable, Int, Int](i => Either.catchNonFatal(10 / i))
+      .instance[String, Int, Int](i => Either.catchNonFatal(10 / i).leftMap(_.getMessage))
     val fc = fa.andThen(fb.run)
     val fd = fa.andThen(fb)
     val fe = fa >>> fb
-    expect.same(fc.run("10"), 1.asRight) and
+    expect.eql(fc.run("10"), 1.asRight) and
       expect(fc.run("abc").isLeft) and
       expect(fc.run("0").isLeft) and
-      expect.same(fd.run("10"), 1.asRight) and
+      expect.eql(fd.run("10"), 1.asRight) and
       expect(fd.run("abc").isLeft) and
       expect(fd.run("0").isLeft) and
-      expect.same(fe.run("10"), 1.asRight) and
+      expect.eql(fe.run("10"), 1.asRight) and
       expect(fe.run("abc").isLeft) and
       expect(fe.run("0").isLeft)
   }
   pureTest("compose") {
     val fa = Decoder
-      .instance[Throwable, Int, Int](i => Either.catchNonFatal(10 / i))
+      .instance[String, Int, Int](i => Either.catchNonFatal(10 / i).leftMap(_.getMessage))
     val fb = Decoder
-      .instance[Throwable, String, Int](s => Either.catchNonFatal(s.toInt))
+      .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
     val fc = fa <<< fb
-    expect.same(fc.run("10"), 1.asRight) and
+    expect.eql(fc.run("10"), 1.asRight) and
       expect(fc.run("abc").isLeft) and
       expect(fc.run("0").isLeft)
   }
   pureTest("second") {
     val fa = Decoder
-      .instance[Throwable, String, Int](s => Either.catchNonFatal(s.toInt))
+      .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
       .second[String]
-    expect.same(fa.run("10" -> "10"), ("10" -> 10).asRight) and
+    expect.eql(fa.run("10" -> "10"), ("10" -> 10).asRight) and
       expect(fa.run("1" -> "abc").isLeft)
   }
 
   object ImplicitResolution:
-    given Decoder[Throwable, String, Int] = Decoder.instance(s => Either.catchNonFatal(s.toInt))
-    Decoder[Throwable, String, Int]
+    given Decoder[String, String, Int] = Decoder.instance(s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
+    Decoder[String, String, Int]
 }

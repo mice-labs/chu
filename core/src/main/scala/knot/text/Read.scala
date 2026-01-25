@@ -1,9 +1,9 @@
 package knot.text
 
 import cats.implicits.*
-import cats.{Applicative, ApplicativeError, Apply}
+import cats.ApplicativeError
 import cats.evidence.As
-import knot.data.{Decoder, Kleisli}
+import knot.data.Decoder
 
 /** Namespace for Read Computation type: Conversion from a readable string to an A type Encapsulation type: String => Either[E, A]
   * @tparam E

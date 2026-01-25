@@ -1,9 +1,8 @@
 package knot.data
 
 import cats.arrow.{Choice, Arrow}
-import cats.{CommutativeMonad, Contravariant, Monad, MonadError}
+import cats.{Contravariant, Monad, MonadError}
 import cats.implicits.*
-import knot.Decoder
 import knot.data.Kleisli
 
 /** Namespace for Decoder monad

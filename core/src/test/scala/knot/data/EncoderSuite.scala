@@ -23,25 +23,25 @@ object EncoderSuite extends SimpleIOSuite with Discipline {
     val fa = Encoder
       .instance[Int, String](_.toString)
       .map(s => s.head)
-    expect.same(fa.run(12), '1')
+    expect.eql(fa.run(12), '1')
   }
   pureTest("dimap") {
     val fa = Encoder
       .instance[Int, String](_.toString)
       .dimap[Long, Char](_.toInt)(s => s.head)
-    expect.same(fa.run(12L), '1')
+    expect.eql(fa.run(12L), '1')
   }
   pureTest("lmap") {
     val fa = Encoder
       .instance[Int, String](_.toString)
       .lmap[Long](_.toInt)
-    expect.same(fa.run(12L), "12")
+    expect.eql(fa.run(12L), "12")
   }
   pureTest("rmap") {
     val fa = Encoder
       .instance[Int, String](_.toString)
       .rmap(_.head)
-    expect.same(fa.run(12), '1')
+    expect.eql(fa.run(12), '1')
   }
   pureTest("andThen") {
     val fa = Encoder.instance[Int, String](_.toString)
@@ -49,18 +49,18 @@ object EncoderSuite extends SimpleIOSuite with Discipline {
     val fc = fa.andThen(fb.run)
     val fd = fa.andThen(fb)
     val fe = fa >>> fb
-    expect.same(fc.run(12), '1') and
-      expect.same(fd.run(12), '1') and
-      expect.same(fe.run(12), '1')
+    expect.eql(fc.run(12), '1') and
+      expect.eql(fd.run(12), '1') and
+      expect.eql(fe.run(12), '1')
   }
   pureTest("compose") {
     val fa = Encoder.instance[String, Char](_.head)
     val fb = Encoder.instance[Int, String](_.toString)
     val fc = fa <<< fb
-    expect.same(fc.run(12), '1')
+    expect.eql(fc.run(12), '1')
   }
   pureTest("second") {
     val fa = Encoder.instance[String, Char](_.head).second[Int]
-    expect.same(fa.run(1 -> "abc"), 1 -> 'a')
+    expect.eql(fa.run(1 -> "abc"), 1 -> 'a')
   }
 }

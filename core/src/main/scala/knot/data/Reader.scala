@@ -2,7 +2,6 @@ package knot.data
 
 import cats.arrow.{Choice, CommutativeArrow}
 import cats.{CommutativeMonad, Contravariant, Id}
-import knot.Reader
 import knot.data.Kleisli
 
 /** Namespace for Reader monad

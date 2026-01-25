@@ -211,7 +211,7 @@ sealed abstract class KleisliInstances4 extends KleisliInstances5:
     new KleisliStrong[F]:
       def F: Functor[F] = Functor[F]
 
-  given [F[_], A, B](using Semigroup[F[B]]): Semigroup[Kleisli[F, A, B]] =
+  given semigroupForKleisli[F[_], A, B](using Semigroup[F[B]]): Semigroup[Kleisli[F, A, B]] =
     new KleisliSemigroup[F, A, B]:
       def FB: Semigroup[F[B]] = Semigroup[F[B]]
 
