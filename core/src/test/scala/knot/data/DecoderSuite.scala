@@ -5,8 +5,8 @@ import cats.implicits.*
 import cats.laws.discipline.*
 import cats.laws.discipline.eq.*
 import cats.laws.discipline.arbitrary.*
-import org.scalacheck.{Arbitrary, Cogen, Gen}
-import weaver.{Expectations, SimpleIOSuite}
+import org.scalacheck.{Arbitrary, Cogen}
+import weaver.SimpleIOSuite
 import weaver.discipline.Discipline
 
 object DecoderSuite extends SimpleIOSuite with Discipline {

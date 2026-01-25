@@ -5,7 +5,7 @@ import cats.implicits.*
 import cats.laws.discipline.*
 import cats.laws.discipline.eq.*
 import cats.laws.discipline.arbitrary.*
-import org.scalacheck.{Arbitrary, Cogen, Gen}
+import org.scalacheck.{Arbitrary, Cogen}
 import weaver.SimpleIOSuite
 import weaver.discipline.Discipline
 
