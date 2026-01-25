@@ -17,7 +17,7 @@ object ShowSuite extends SimpleIOSuite with Discipline {
 
   checkAll("Show", ContravariantTests[Show].contravariant[MiniInt, Int, Boolean])
 
-  pureTest("contramap") {
+  pureTest("Show[Int]: contramap") {
     val fa = Show
       .instance[Int](_.toString)
       .contramap[Long](_.toInt)

@@ -19,31 +19,31 @@ object EncoderSuite extends SimpleIOSuite with Discipline {
   checkAll("Encoder[*, *]", CommutativeArrowTests[Encoder[*, *]].commutativeArrow[MiniInt, MiniInt, MiniInt, MiniInt, MiniInt, Boolean])
   checkAll("Encoder[*, *]", ChoiceTests[Encoder[*, *]].choice[MiniInt, Boolean, Int, Int])
   checkAll("Encoder[*, Int]", ContravariantTests[Encoder[*, Int]].contravariant[MiniInt, Int, Boolean])
-  pureTest("map") {
+  pureTest("Encoder[Int, String]: map") {
     val fa = Encoder
       .instance[Int, String](_.toString)
       .map(s => s.head)
     expect.eql(fa.run(12), '1')
   }
-  pureTest("dimap") {
+  pureTest("Encoder[Int, String]: dimap") {
     val fa = Encoder
       .instance[Int, String](_.toString)
       .dimap[Long, Char](_.toInt)(s => s.head)
     expect.eql(fa.run(12L), '1')
   }
-  pureTest("lmap") {
+  pureTest("Encoder[Int, String]: lmap") {
     val fa = Encoder
       .instance[Int, String](_.toString)
       .lmap[Long](_.toInt)
     expect.eql(fa.run(12L), "12")
   }
-  pureTest("rmap") {
+  pureTest("Encoder[Int, String]: rmap") {
     val fa = Encoder
       .instance[Int, String](_.toString)
       .rmap(_.head)
     expect.eql(fa.run(12), '1')
   }
-  pureTest("andThen") {
+  pureTest("Encoder[Int, String]: andThen") {
     val fa = Encoder.instance[Int, String](_.toString)
     val fb = Encoder.instance[String, Char](_.head)
     val fc = fa.andThen(fb.run)
@@ -53,13 +53,13 @@ object EncoderSuite extends SimpleIOSuite with Discipline {
       expect.eql(fd.run(12), '1') and
       expect.eql(fe.run(12), '1')
   }
-  pureTest("compose") {
+  pureTest("Encoder[String, Char]: compose") {
     val fa = Encoder.instance[String, Char](_.head)
     val fb = Encoder.instance[Int, String](_.toString)
     val fc = fa <<< fb
     expect.eql(fc.run(12), '1')
   }
-  pureTest("second") {
+  pureTest("Encoder[String, Char]: second") {
     val fa = Encoder.instance[String, Char](_.head).second[Int]
     expect.eql(fa.run(1 -> "abc"), 1 -> 'a')
   }

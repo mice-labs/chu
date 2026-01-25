@@ -21,42 +21,42 @@ object DecoderSuite extends SimpleIOSuite with Discipline {
   checkAll("Decoder[MiniInt, *, *]", ChoiceTests[Decoder[Int, *, *]].choice[MiniInt, Boolean, Int, Int])
   checkAll("Decoder[MiniInt, *, Int]", ContravariantTests[Decoder[Int, *, Int]].contravariant[MiniInt, Int, Boolean])
 
-  pureTest("contramap") {
+  pureTest("Decoder[String, String, Int]: contramap") {
     val fa = Decoder
       .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
       .contramap[Long](l => l.toString)
     expect.eql(fa.run(123L), 123.asRight) and
       expect(fa.run(Long.MaxValue).isLeft)
   }
-  pureTest("map") {
+  pureTest("Decoder[String, String, Int]: map") {
     val fa = Decoder
       .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
       .map(_ + 1)
     expect.eql(fa.run("10"), 11.asRight) and
       expect(fa.run("abc").isLeft)
   }
-  pureTest("dimap") {
+  pureTest("Decoder[String, String, Int]: dimap") {
     val fa = Decoder
       .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
       .dimap[Long, Int](l => l.toString)(_ + 1)
     expect.eql(fa.run(124L), 125.asRight) and
       expect(fa.run(Long.MaxValue).isLeft)
   }
-  pureTest("lmap") {
+  pureTest("Decoder[String, String, Int]: lmap") {
     val fa = Decoder
       .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
       .lmap[Long](l => l.toString)
     expect.eql(fa.run(123L), 123.asRight) and
       expect(fa.run(Long.MaxValue).isLeft)
   }
-  pureTest("rmap") {
+  pureTest("Decoder[String, String, Int]: rmap") {
     val fa = Decoder
       .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
       .rmap(_ + 1)
     expect.eql(fa.run("10"), 11.asRight) and
       expect(fa.run("abc").isLeft)
   }
-  pureTest("andThen") {
+  pureTest("Decoder[String, String, Int]: andThen") {
     val fa = Decoder
       .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
     val fb = Decoder
@@ -74,7 +74,7 @@ object DecoderSuite extends SimpleIOSuite with Discipline {
       expect(fe.run("abc").isLeft) and
       expect(fe.run("0").isLeft)
   }
-  pureTest("compose") {
+  pureTest("Decoder[String, Int, Int]: compose") {
     val fa = Decoder
       .instance[String, Int, Int](i => Either.catchNonFatal(10 / i).leftMap(_.getMessage))
     val fb = Decoder
@@ -84,7 +84,7 @@ object DecoderSuite extends SimpleIOSuite with Discipline {
       expect(fc.run("abc").isLeft) and
       expect(fc.run("0").isLeft)
   }
-  pureTest("second") {
+  pureTest("Decoder[String, String, Int]: second") {
     val fa = Decoder
       .instance[String, String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
       .second[String]

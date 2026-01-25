@@ -19,7 +19,7 @@ object ReadSuite extends SimpleIOSuite with Discipline {
     Arbitrary(Arbitrary.arbitrary[String => Either[E, A]].map(Read.instance))
 
   checkAll("Read[MinInt, *]", ApplicativeErrorTests[Read[MiniInt, *], MiniInt].applicativeError[Int, Int, Int])
-  pureTest("map") {
+  pureTest("Read[String, Int]: map") {
     val fa = Read
       .instance[String, Int](s => Either.catchNonFatal(s.toInt).leftMap(_.getMessage))
       .map(_ + 1)
